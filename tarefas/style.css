@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+
 *{
     margin: 0px;
     padding: 0px;
@@ -5,5 +7,62 @@
 
 body{
     box-sizing: border-box;
-    background-color: darkblue;
+    background-color: rgb(0, 0, 54);
+}
+
+.principal__conteudo{
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+}
+
+h2{
+    position: absolute;
+    transform: translateY(80%);
+    font-family: "Caveat", serif;
+    font-size: 180%;
+}
+
+.principal__conteudo__lista{
+    display: flex;
+    flex-direction: column;
+    gap: 6%;
+    padding: 10% 4%;
+    background-color: aliceblue;
+    border: 10px inset gray;
+}
+
+.principal__conteudo__lista__item{
+    display: flex;
+    align-items: center;
+    gap: 4%;
+    font-family: "Caveat", serif;
+    font-size: 120%;
+    transform: translate(20%, -200%);
+    padding-bottom: 4%;
+}
+
+.caixa{
+    display: flex;
+    gap: 4%;
+    transform: translateX(-2%);
+}
+
+.caixa button:nth-child(2){
+    background-color: green;
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.caixa button:last-child{
+    background-color: rgb(204, 119, 0);
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.principal__conteudo__lista__botao{
+    padding: 2.8%;
+    background-color: rgb(128, 0, 0);
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }

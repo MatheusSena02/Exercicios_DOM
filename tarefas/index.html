@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Tarefas de Código em DOM</title>
     <link rel="stylesheet" href="./style.css">
-    <script src="./app.js"></script>
 </head>
 <body>
     <main class="principal">
-        
+        <section class="principal__conteudo">
+            <h2>Lista de Tarefas</h2>
+            <ul class="principal__conteudo__lista">
+                <div class="caixa">
+                    <input id="add" class="principal__conteudo__lista__entrada" type="text" placeholder="Adicionar tarefa">
+                    <button class="principal__conteudo__lista__botao">Concluir</button>
+                    <button class="principal__conteudo__lista__botao">Limpar Tarefas</button>
+                </div>
+            </ul>
+        </section>
     </main>
+    <script src="./app.js"></script>
 </body>
 </html>
