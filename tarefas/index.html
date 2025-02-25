@@ -9,13 +9,14 @@
 <body>
     <main class="principal">
         <section class="principal__conteudo">
-            <h2>Lista de Tarefas</h2>
+            <h2 class="principal__conteudo__titulo">Lista de Tarefas</h2>
             <ul class="principal__conteudo__lista">
-                <div class="caixa">
+                <li class="principal__conteudo__lista__caixa">
                     <input id="add" class="principal__conteudo__lista__entrada" type="text" placeholder="Adicionar tarefa">
-                    <button class="principal__conteudo__lista__botao">Concluir</button>
-                    <button class="principal__conteudo__lista__botao">Limpar Tarefas</button>
-                </div>
+                    <button id="add_button" class="principal__conteudo__lista__botao">CONCLUIR</button>
+                    <button id="clean" class="principal__conteudo__lista__botao">LIMPAR TAREFAS</button>
+                    <h2 class="principal__conteudo__lista__caixa__contador"></h2>
+                </li>
             </ul>
         </section>
     </main>
