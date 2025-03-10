@@ -11,12 +11,29 @@ document.addEventListener("DOMContentLoaded", function(){
         let concluirTarefa = document.createElement("button");
         concluirTarefa.textContent = "Concluir";
         concluirTarefa.className = "principal__conteudo__lista__item__concluir";
+        let prioridades = document.createElement("select");
+        let introducao = document.createElement("option");
+        introducao.textContent = "Grau de Prioridade";
+        introducao.style.textAlign = "center";
+        let baixa = document.createElement("option");
+        baixa.textContent = "Baixa";
+        baixa.style.textAlign = "center";
+        let medio = document.createElement("option");
+        medio.textContent = "Média";
+        medio.style.textAlign = "center"
+        let alta = document.createElement("option");
+        alta.textContent = "Alta";
+        alta.style.textAlign = "center";
+        prioridades.appendChild(introducao);
+        prioridades.appendChild(alta);
+        prioridades.appendChild(medio);
+        prioridades.appendChild(baixa);
+        novaTarefa.appendChild(prioridades);
         novaTarefa.appendChild(tituloTarefa);
         novaTarefa.appendChild(botaoRemover);
         novaTarefa.appendChild(concluirTarefa);
         let lista = document.querySelector("ul");
         lista.appendChild(novaTarefa);
-
         concluirTarefa.addEventListener("click", function(){
             novaTarefa.className = "principal__conteudo__lista__item__concluido";
 
@@ -39,8 +56,44 @@ document.addEventListener("DOMContentLoaded", function(){
         let clean = document.getElementById("clean");
         clean.addEventListener("click", limparTarefas);
         tituloTarefa.addEventListener("click", function(){
-            let novoTitulo = prompt("Digite o novo título para a tarefa");
-            tituloTarefa.textContent = novoTitulo;
+            novaTarefa.style.display = "none";
+            let tarefaAtualizada = document.createElement("li");
+            tarefaAtualizada.className = "principal__conteudo__lista__item";
+            let novoInput = document.createElement("input");
+            novoInput.style.padding = "2%";
+            novoInput.style.width = "40%"
+            novoInput.addEventListener("keypress", function(){
+                if(input.key == "Enter"){
+                    tituloTarefa.textContent = novoInput.value;
+                    novaTarefa.style.display = "flex";
+                    tarefaAtualizada.style.display = "none";
+
+                }
+            })
+            let concluir = document.createElement("button");
+            concluir.className = "principal__conteudo__lista__item__concluir";
+            concluir.style.backgroundColor = "gray";
+            concluir.textContent = "Concluir";
+            if(novoInput.value != ""){
+                concluir.style.backgroundColor = "rgb(0, 97, 0)";
+            }
+            concluir.addEventListener("click", function(){
+                tituloTarefa.textContent = novoInput.value;
+                novaTarefa.style.display = "flex";
+                tarefaAtualizada.style.display = "none";
+            })
+            let limpar = document.createElement("button");
+            limpar.className = "principal__conteudo__lista__item__remover";
+            limpar.textContent = "Limpar";
+            limpar.addEventListener("click", function(){
+                novoInput.value = "";
+            })
+            
+            lista.appendChild(tarefaAtualizada);
+            tarefaAtualizada.appendChild(novoInput);
+            tarefaAtualizada.appendChild(concluir);
+            tarefaAtualizada.appendChild(limpar);
+
         })
     }
         let botaoAdicionar = document.querySelector("#add_button");
