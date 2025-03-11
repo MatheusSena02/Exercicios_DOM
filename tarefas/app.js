@@ -1,137 +1,113 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let botaoAdicionar = document.querySelector("#add_button");
-    let input = document.getElementById("add");
+document.addEventListener("DOMContentLoaded", function(){
     let lista = document.querySelector("ul");
-    let contador = document.querySelector(".principal__conteudo__lista__caixa__contador");
-    let filtro = document.getElementById("filter");
-    let clean = document.getElementById("clean");
 
-    function atualizarContador() {
-        let numeroTarefas = document.querySelectorAll(".principal__conteudo__lista__item").length;
-        contador.textContent = numeroTarefas;
-        document.body.style.backgroundColor = numeroTarefas === 0 ? "#f5f5f5" : "#ccc";
-    }
+    let filtro = document.createElement("select");
+    let todasTarefas = new Option("Todas as tarefas", "todas");
+    let tarefasPendentes = new Option("Tarefas pendentes", "pendentes");
+    let tarefasConcluidas = new Option("Tarefas Concluidas", "concluidas");
+    filtro.appendChild(todasTarefas);
+    filtro.appendChild(tarefasPendentes);
+    filtro.appendChild(tarefasConcluidas);
+    lista.appendChild(filtro);
 
-    function salvarTarefas() {
-        let tarefas = [];
-        document.querySelectorAll(".principal__conteudo__lista__item").forEach(tarefa => {
-            tarefas.push({
-                texto: tarefa.querySelector("h2").textContent,
-                prioridade: tarefa.dataset.prioridade,
-                concluida: tarefa.classList.contains("principal__conteudo__lista__item__concluido")
-            });
+    let input = document.getElementById("add");
+
+    input.addEventListener("input", function(){
+        botaoAdicionar.style.backgroundColor = "green";
+        botaoAdicionar.disabled = false;
+    })
+
+    function ordenarTarefas() {
+        let tarefas = Array.from(lista.children);
+        tarefas.sort((a, b) => {
+            let prioridades = { alta: 1, media: 2, baixa: 3 };
+            return (prioridades[a.querySelector("select").value] || 4) - (prioridades[b.querySelector("select").value] || 4);
         });
-        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+        tarefas.forEach(t => lista.appendChild(t));
     }
 
-    function carregarTarefas() {
-        let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
-        tarefas.forEach(tarefa => adicionarTarefa(tarefa.texto, tarefa.prioridade, tarefa.concluida));
-    }
+    let contador = document.querySelector(".principal__conteudo__lista__caixa__contador");  
+    contador.textContent = "0";
 
-    function adicionarTarefa(valorEntrada, prioridadeSelecionada = "Baixa", concluida = false) {
-        if (!valorEntrada.trim()) return;
-
+    function adicionarTarefa(){
         let novaTarefa = document.createElement("li");
         novaTarefa.className = "principal__conteudo__lista__item";
-        novaTarefa.dataset.prioridade = prioridadeSelecionada;
-        novaTarefa.style.opacity = "0";
-        setTimeout(() => (novaTarefa.style.opacity = "1"), 100);
-
         let tituloTarefa = document.createElement("h2");
-        tituloTarefa.textContent = valorEntrada;
-        
-        let prioridade = document.createElement("span");
-        prioridade.textContent = `(${prioridadeSelecionada})`;
-        prioridade.style.color = prioridadeSelecionada === "Alta" ? "red" : prioridadeSelecionada === "Média" ? "orange" : "green";
-        novaTarefa.style.backgroundColor = prioridadeSelecionada === "Alta" ? "#ffcccc" : prioridadeSelecionada === "Média" ? "#fff5cc" : "#ccffcc";
+        tituloTarefa.textContent = input.value;
+
+        contador.textContent++;
+
+        let prioridades = document.createElement("select");
+        ["Grau de Prioridade", "Alta", "Média", "Baixa"].forEach(text => {
+            let opcao = new Option(text, text.toLowerCase());
+            prioridades.appendChild(opcao);
+        });
+
+        prioridades.addEventListener("change", function() {
+            let cores = { alta: "#ff9999", media: "#ffff99", baixa: "#99ff99" };
+            let coresTexto = { alta: "red", media: "orange", baixa: "green" };
+            novaTarefa.style.backgroundColor = cores[prioridades.value] || "";
+            tituloTarefa.style.color = coresTexto[prioridades.value] || "";
+            ordenarTarefas();
+        });
 
         let botaoRemover = document.createElement("button");
         botaoRemover.textContent = "Remover";
         botaoRemover.className = "principal__conteudo__lista__item__remover";
-        botaoRemover.style.backgroundColor = "red";
 
-        let concluirTarefa = document.createElement("button");
-        concluirTarefa.textContent = "Concluir";
-        concluirTarefa.className = "principal__conteudo__lista__item__concluir";
 
-        novaTarefa.appendChild(tituloTarefa);
-        novaTarefa.appendChild(prioridade);
-        novaTarefa.appendChild(botaoRemover);
-        novaTarefa.appendChild(concluirTarefa);
-        lista.appendChild(novaTarefa);
-
-        if (concluida) marcarComoConcluida(novaTarefa);
-        organizarTarefas();
-        atualizarContador();
-        salvarTarefas();
-
-        concluirTarefa.addEventListener("click", function () {
-            marcarComoConcluida(novaTarefa);
-            salvarTarefas();
-        });
-
-        botaoRemover.addEventListener("click", function () {
+        botaoRemover.addEventListener("click", function(){
             novaTarefa.style.opacity = "0";
+            novaTarefa.style.transitionDuration = "2s";
             setTimeout(() => {
                 lista.removeChild(novaTarefa);
-                atualizarContador();
-                salvarTarefas();
-            }, 500);
+                contador.textContent--;
+            }, 1500)
         });
-    }
 
-    function marcarComoConcluida(tarefa) {
-        tarefa.classList.toggle("principal__conteudo__lista__item__concluido");
-        tarefa.style.backgroundColor = tarefa.classList.contains("principal__conteudo__lista__item__concluido") ? "#e0e0e0" : "";
-        tarefa.querySelector("h2").style.textDecoration = tarefa.classList.contains("principal__conteudo__lista__item__concluido") ? "line-through" : "none";
-        tarefa.querySelector(".principal__conteudo__lista__item__remover").style.backgroundColor = tarefa.classList.contains("principal__conteudo__lista__item__concluido") ? "green" : "red";
-    }
+        let concluirTarefa = document.createElement("button");
+        concluirTarefa.className = "principal__conteudo__lista__item__concluir";
+        concluirTarefa.textContent = "Concluir";
 
-    function organizarTarefas() {
-        let tarefas = Array.from(lista.children);
-        tarefas.sort((a, b) => {
-            let prioridades = { "Alta": 1, "Média": 2, "Baixa": 3 };
-            return prioridades[a.dataset.prioridade] - prioridades[b.dataset.prioridade];
+        concluirTarefa.addEventListener("click", function() {
+            novaTarefa.classList.toggle("concluido");
+            novaTarefa.style.backgroundColor = novaTarefa.classList.contains("concluido") ? "#d3d3d3" : "";
+            tituloTarefa.style.textDecoration = novaTarefa.classList.contains("concluido") ? "line-through" : "none";
+            botaoRemover.style.backgroundColor = novaTarefa.classList.contains("concluido") ? "green" : "red";
+            novaTarefa.className = "principal__conteudo__lista__item__concluido";
         });
-        tarefas.forEach(tarefa => lista.appendChild(tarefa));
-    }
 
-    filtro.addEventListener("change", function () {
-        let tipo = filtro.value;
-        document.querySelectorAll(".principal__conteudo__lista__item").forEach(tarefa => {
-            if (tipo === "todas" || (tipo === "pendentes" && !tarefa.classList.contains("principal__conteudo__lista__item__concluido")) || (tipo === "concluidas" && tarefa.classList.contains("principal__conteudo__lista__item__concluido"))) {
-                tarefa.style.display = "flex";
-            } else {
-                tarefa.style.display = "none";
+        novaTarefa.append(prioridades, tituloTarefa, botaoRemover, concluirTarefa);
+        lista.appendChild(novaTarefa);
+
+        function limparTarefas(){
+            lista.removeChild(novaTarefa);
+            contador.textContent = "0";
+        }
+    
+        let clean = document.getElementById("clean");
+        clean.addEventListener("click", limparTarefas);
+    }
+        function ordenarTarefas() {
+            let tarefas = Array.from(lista.children);
+            tarefas.sort((a, b) => {
+                let prioridades = { alta: 1, media: 2, baixa: 3 };
+                return (prioridades[a.querySelector("select").value] || 4) - (prioridades[b.querySelector("select").value] || 4);
+            });
+            tarefas.forEach(t => lista.appendChild(t));
+        }
+
+        let botaoAdicionar = document.querySelector("#add_button");
+        botaoAdicionar.addEventListener("click", adicionarTarefa);
+
+        filtro.addEventListener("change", function() {
+            let tarefas = lista.children;
+            for (let tarefa of tarefas) {
+                if (filtro.value === "todas" || (filtro.value === "pendentes" && !tarefa.classList.contains("concluido")) || (filtro.value === "concluidas" && tarefa.classList.contains("concluido"))) {
+                    ordenarTarefas
+                } else {
+                    tarefa.style.display = "none";
+                }
             }
         });
-    });
-
-    clean.addEventListener("click", function () {
-        lista.innerHTML = "";
-        atualizarContador();
-        salvarTarefas();
-    });
-
-    input.addEventListener("input", function () {
-        botaoAdicionar.disabled = !input.value.trim();
-        botaoAdicionar.style.backgroundColor = input.value.trim() ? "green" : "gray";
-    });
-
-    botaoAdicionar.addEventListener("click", function () {
-        let prioridadeSelecionada = document.getElementById("priority").value;
-        adicionarTarefa(input.value, prioridadeSelecionada);
-        input.value = "";
-        botaoAdicionar.disabled = true;
-        botaoAdicionar.style.backgroundColor = "gray";
-    });
-
-    input.addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            botaoAdicionar.click();
-        }
-    });
-
-    carregarTarefas();
 });
