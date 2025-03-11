@@ -15,15 +15,17 @@ document.addEventListener("DOMContentLoaded", function(){
     input.addEventListener("input", function(){
         botaoAdicionar.style.backgroundColor = "green";
         botaoAdicionar.disabled = false;
-    })
+    });
 
     function ordenarTarefas() {
-        let tarefas = Array.from(lista.children);
+        let tarefas = Array.from(lista.querySelectorAll(".principal__conteudo__lista__item"));
         tarefas.sort((a, b) => {
             let prioridades = { alta: 1, media: 2, baixa: 3 };
-            return (prioridades[a.querySelector("select").value] || 4) - (prioridades[b.querySelector("select").value] || 4);
+            let prioridadeA = prioridades[a.getAttribute("data-prioridade")] || 4;
+            let prioridadeB = prioridades[b.getAttribute("data-prioridade")] || 4;
+            return prioridadeA - prioridadeB;
         });
-        tarefas.forEach(t => lista.appendChild(t));
+        tarefas.forEach(t => lista.insertBefore(t, lista.firstChild));
     }
 
     let contador = document.querySelector(".principal__conteudo__lista__caixa__contador");  
@@ -46,8 +48,10 @@ document.addEventListener("DOMContentLoaded", function(){
         prioridades.addEventListener("change", function() {
             let cores = { alta: "#ff9999", media: "#ffff99", baixa: "#99ff99" };
             let coresTexto = { alta: "red", media: "orange", baixa: "green" };
-            novaTarefa.style.backgroundColor = cores[prioridades.value] || "";
-            tituloTarefa.style.color = coresTexto[prioridades.value] || "";
+            let prioridadeSelecionada = prioridades.value;
+            novaTarefa.style.backgroundColor = cores[prioridadeSelecionada] || "";
+            tituloTarefa.style.color = coresTexto[prioridadeSelecionada] || "";
+            novaTarefa.setAttribute("data-prioridade", prioridadeSelecionada);
             ordenarTarefas();
         });
 
@@ -55,14 +59,13 @@ document.addEventListener("DOMContentLoaded", function(){
         botaoRemover.textContent = "Remover";
         botaoRemover.className = "principal__conteudo__lista__item__remover";
 
-
         botaoRemover.addEventListener("click", function(){
             novaTarefa.style.opacity = "0";
             novaTarefa.style.transitionDuration = "2s";
             setTimeout(() => {
                 lista.removeChild(novaTarefa);
                 contador.textContent--;
-            }, 1500)
+            }, 1500);
         });
 
         let concluirTarefa = document.createElement("button");
@@ -74,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function(){
             novaTarefa.style.backgroundColor = novaTarefa.classList.contains("concluido") ? "#d3d3d3" : "";
             tituloTarefa.style.textDecoration = novaTarefa.classList.contains("concluido") ? "line-through" : "none";
             botaoRemover.style.backgroundColor = novaTarefa.classList.contains("concluido") ? "green" : "red";
-            novaTarefa.className = "principal__conteudo__lista__item__concluido";
         });
 
         novaTarefa.append(prioridades, tituloTarefa, botaoRemover, concluirTarefa);
@@ -88,26 +90,24 @@ document.addEventListener("DOMContentLoaded", function(){
         let clean = document.getElementById("clean");
         clean.addEventListener("click", limparTarefas);
     }
-        function ordenarTarefas() {
-            let tarefas = Array.from(lista.children);
-            tarefas.sort((a, b) => {
-                let prioridades = { alta: 1, media: 2, baixa: 3 };
-                return (prioridades[a.querySelector("select").value] || 4) - (prioridades[b.querySelector("select").value] || 4);
-            });
-            tarefas.forEach(t => lista.appendChild(t));
-        }
 
-        let botaoAdicionar = document.querySelector("#add_button");
-        botaoAdicionar.addEventListener("click", adicionarTarefa);
+    let botaoAdicionar = document.querySelector("#add_button");
+    botaoAdicionar.addEventListener("click", adicionarTarefa);
 
-        filtro.addEventListener("change", function() {
-            let tarefas = lista.children;
-            for (let tarefa of tarefas) {
-                if (filtro.value === "todas" || (filtro.value === "pendentes" && !tarefa.classList.contains("concluido")) || (filtro.value === "concluidas" && tarefa.classList.contains("concluido"))) {
-                    ordenarTarefas
-                } else {
-                    tarefa.style.display = "none";
-                }
+    filtro.addEventListener("change", function() {
+        let tarefas = lista.querySelectorAll(".principal__conteudo__lista__item");
+        tarefas.forEach(tarefa => {
+            if (filtro.value === "todas") {
+                tarefa.style.display = "flex";
+            } else if (filtro.value === "pendentes" && !tarefa.classList.contains("concluido")) {
+                tarefa.style.display = "flex";
+            } else if (filtro.value === "concluidas" && tarefa.classList.contains("concluido")) {
+                tarefa.style.display = "flex";
+            } else {
+                tarefa.style.display = "none";
             }
         });
+    });
+    let clean = document.getElementById("clean");
+    clean.addEventListener("click", limparTarefas);
 });
