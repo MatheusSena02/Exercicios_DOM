@@ -1,6 +1,58 @@
 document.addEventListener("DOMContentLoaded", function(){
-    let lista = document.querySelector("ul");
+    function estilizacaoLista(){
+        document.body.style.boxSizing = "border-box";
+        document.body.style.backgroundColor = "rgb(0, 0, 54)";
 
+        let documento = document.querySelector(".principal__conteudo");
+        documento.style.display = "flex";
+        documento.style.padding = "2%";
+        documento.style.justifyContent = "center";
+
+        let titulo = document.querySelector(".principal__conteudo__titulo");
+        titulo.style.position = "absolute";
+        titulo.style.transform = "translateY(80%)";
+        titulo.style.fontFamily = "Caveat";
+        titulo.style.fontSize = "180%";
+
+        let lista = document.querySelector(".principal__conteudo__lista");
+        lista.style.display = "flex";
+        lista.style.flexDirection = "column-reverse";
+        lista.style.gap = "6%";
+        lista.style.padding = "6% 4%";
+        lista.style.backgroundColor = "aliceblue";
+        lista.style.border = "10px inset gray";
+
+        let funcionalidadesTarefas = document.querySelector(".principal__conteudo__lista__caixa");
+        funcionalidadesTarefas.style.listStyle = "none";
+        funcionalidadesTarefas.style.display = "flex";
+        funcionalidadesTarefas.style.gap = "10%";
+        funcionalidadesTarefas.style.transform = "translateX(-8%)";
+        funcionalidadesTarefas.style.width = "30%";
+
+        let botaoAdicionar = documento.querySelector(".principal__conteudo__lista__caixa button:nth-child(2)");
+        botaoAdicionar.style.padding = "2%";
+        botaoAdicionar.style.color = "rgb(0, 97, 0)";
+        botaoAdicionar.style.fontSize = "100%";
+        botaoAdicionar.style.fontFamily = "Tiny5";
+
+        let botaoLimparTarefas = document.querySelector(".principal__conteudo__lista__caixa button:nth-child(3)");
+        botaoLimparTarefas.style.padding = "2%";
+        botaoLimparTarefas.style.color = "aliceblue";
+        botaoLimparTarefas.style.backgroundColor = "rgb(255, 72, 0)";
+        botaoLimparTarefas.style.fontSize = "100%";
+        botaoLimparTarefas.style.fontFamily = "Tiny5";
+
+        let contador = document.querySelector(".principal__conteudo__lista__caixa__contador");
+        contador.style.padding = "6% 10%";
+        contador.style.textAling = "center";
+        contador.style.backgroundColor = "darkgray";
+        contador.style.fontFamily = "Tiny5";
+        contador.style.border = "6px inset gray"
+    }
+
+    estilizacaoLista();
+
+    let lista = document.querySelector("ul");
     let filtro = document.createElement("select");
     let todasTarefas = new Option("Todas as tarefas", "todas");
     let tarefasPendentes = new Option("Tarefas pendentes", "pendentes");
@@ -11,9 +63,9 @@ document.addEventListener("DOMContentLoaded", function(){
     lista.appendChild(filtro);
 
     let input = document.getElementById("add");
-
     input.addEventListener("input", function(){
-        botaoAdicionar.style.backgroundColor = "green";
+        botaoAdicionar.style.backgroundColor = "rgb(0, 97, 0)";
+        botaoAdicionar.style.color = "aliceblue";
         botaoAdicionar.disabled = false;
     });
 
@@ -33,9 +85,28 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function adicionarTarefa(){
         let novaTarefa = document.createElement("li");
-        novaTarefa.className = "principal__conteudo__lista__item";
+        novaTarefa.style.display = "flex";
+        novaTarefa.style.justifyContent = "center";
+        novaTarefa.style.alignItems = "center";
+        novaTarefa.style.marginBottom = "14%";
+        novaTarefa.style.fontFamily = "Caveat";
+        novaTarefa.style.fontSize = "120%";
+        novaTarefa.style.gap = "4%";
+
         let tituloTarefa = document.createElement("h2");
         tituloTarefa.textContent = input.value;
+        tituloTarefa.addEventListener("click", function(){
+            let novoInput = document.createElement("input");
+            novoInput.setAttribute("type", "text");
+            tituloTarefa.outerHTML = novoInput.outerHTML;
+            tituloTarefa.textContent = novoInput.value;
+
+            novoInput.addEventListener("keypress", function(event){
+                if(event.key === "Enter"){
+                    tituloTarefa.outerHTML = "<h2></h2>";
+                }
+            })
+        })
 
         contador.textContent++;
 
@@ -57,7 +128,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let botaoRemover = document.createElement("button");
         botaoRemover.textContent = "Remover";
-        botaoRemover.className = "principal__conteudo__lista__item__remover";
+        botaoRemover.style.padding = "2%";
+        botaoRemover.style.backgroundColor = "#800000";
+        botaoRemover.style.color = "aliceblue";
+        botaoRemover.style.fontSize = "70%";
+        botaoRemover.style.fontFamily = "Tiny5";
 
         botaoRemover.addEventListener("click", function(){
             novaTarefa.style.opacity = "0";
@@ -69,8 +144,12 @@ document.addEventListener("DOMContentLoaded", function(){
         });
 
         let concluirTarefa = document.createElement("button");
-        concluirTarefa.className = "principal__conteudo__lista__item__concluir";
         concluirTarefa.textContent = "Concluir";
+        concluirTarefa.style.padding = "2%";
+        concluirTarefa.style.backgroundColor = "rgb(0, 97, 0)";
+        concluirTarefa.style.color = "aliceblue";
+        concluirTarefa.style.fontSize = "70%";
+        concluirTarefa.style.fontFamily = "Tiny5";
 
         concluirTarefa.addEventListener("click", function() {
             novaTarefa.classList.toggle("concluido");
@@ -108,6 +187,4 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         });
     });
-    let clean = document.getElementById("clean");
-    clean.addEventListener("click", limparTarefas);
 });
