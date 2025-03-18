@@ -62,6 +62,17 @@ document.addEventListener("DOMContentLoaded", function(){
     filtro.appendChild(tarefasConcluidas);
     lista.appendChild(filtro);
 
+    function ordenarTarefas() {
+        let tarefas = Array.from(lista.querySelectorAll("li"));
+        tarefas.sort((a, b) => {
+            let prioridades = { alta: 1, media: 2, baixa: 3 };
+            let prioridadeA = prioridades[a.getAttribute("data-prioridade")] || 4;
+            let prioridadeB = prioridades[b.getAttribute("data-prioridade")] || 4;
+            return prioridadeA - prioridadeB;
+        });
+        tarefas.forEach(t => lista.appendChild(t));
+    }
+
     let input = document.getElementById("add");
     input.addEventListener("input", function(){
         botaoAdicionar.style.backgroundColor = "rgb(0, 97, 0)";
@@ -113,6 +124,16 @@ document.addEventListener("DOMContentLoaded", function(){
             prioridades.appendChild(opcao);
         });
 
+        prioridades.addEventListener("change", function() {
+            let cores = { alta: "#ff9999", media: "#ffff99", baixa: "#99ff99" };
+            let coresTexto = { alta: "red", media: "orange", baixa: "green" };
+            let prioridadeSelecionada = prioridades.value;
+            novaTarefa.style.backgroundColor = cores[prioridadeSelecionada] || "";
+            tituloTarefa.style.color = coresTexto[prioridadeSelecionada] || "";
+            novaTarefa.setAttribute("data-prioridade", prioridadeSelecionada);
+            ordenarTarefas();
+        });
+
         let botaoRemover = document.createElement("button");
         botaoRemover.textContent = "Remover";
         botaoRemover.style.padding = "2%";
@@ -152,7 +173,23 @@ document.addEventListener("DOMContentLoaded", function(){
             lista.removeChild(novaTarefa);
             contador.textContent = "0";
         }
-    
+        
+        filtro.addEventListener("change", function() {
+            let tarefas = lista.querySelectorAll("li");
+            tarefas.forEach(tarefa => {
+                let concluida = tarefa.classList.contains("concluido");
+                if (filtro.value === "todas") {
+                    tarefa.style.display = "flex";
+                } else if (filtro.value === "pendentes" && !concluida) {
+                    tarefa.style.display = "flex";
+                } else if (filtro.value === "concluidas" && concluida) {
+                    tarefa.style.display = "flex";
+                } else {
+                    tarefa.style.display = "none";
+                }
+            });
+        });
+
         let clean = document.getElementById("clean");
         clean.addEventListener("click", limparTarefas);
     }
@@ -160,41 +197,3 @@ document.addEventListener("DOMContentLoaded", function(){
     let botaoAdicionar = document.querySelector("#add_button");
     botaoAdicionar.addEventListener("click", adicionarTarefa);
 });
-
-
-// // //function ordenarTarefas() {
-// //     let tarefas = Array.from(lista.querySelectorAll("li"));
-// //     tarefas.sort((a, b) => {
-// //         let prioridades = { alta: 1, media: 2, baixa: 3 };
-// //         let prioridadeA = prioridades[a.getAttribute("data-prioridade")] || 4;
-// //         let prioridadeB = prioridades[b.getAttribute("data-prioridade")] || 4;
-// //         return prioridadeA - prioridadeB;
-// //     });
-// //     tarefas.forEach(t => lista.appendChild(t));
-// // }
-// prioridades.addEventListener("change", function() {
-//     let cores = { alta: "#ff9999", media: "#ffff99", baixa: "#99ff99" };
-//     let coresTexto = { alta: "red", media: "orange", baixa: "green" };
-//     let prioridadeSelecionada = prioridades.value;
-//     novaTarefa.style.backgroundColor = cores[prioridadeSelecionada] || "";
-//     tituloTarefa.style.color = coresTexto[prioridadeSelecionada] || "";
-//     novaTarefa.setAttribute("data-prioridade", prioridadeSelecionada);
-//     ordenarTarefas();
-// });
-// filtro.addEventListener("change", function() {
-//     let tarefas = lista.querySelectorAll("li");
-//     tarefas.forEach(tarefa => {
-//         let concluida = tarefa.classList.contains("concluido");
-//         if (filtro.value === "todas") {
-//             tarefa.style.display = "flex";
-//         } else if (filtro.value === "pendentes" && !concluida) {
-//             tarefa.style.display = "flex";
-//         } else if (filtro.value === "concluidas" && concluida) {
-//             tarefa.style.display = "flex";
-//         } else {
-//             tarefa.style.display = "none";
-//         }
-//     });
-// });
-
-
