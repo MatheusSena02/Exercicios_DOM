@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let lista = document.querySelector(".principal__conteudo__lista");
         lista.style.display = "flex";
-        lista.style.flexDirection = "column-reverse";
+        lista.style.flexDirection = "column";
         lista.style.gap = "6%";
         lista.style.padding = "6% 4%";
         lista.style.backgroundColor = "aliceblue";
@@ -65,9 +65,9 @@ document.addEventListener("DOMContentLoaded", function(){
     function ordenarTarefas() {
         let tarefas = Array.from(lista.querySelectorAll("li"));
         tarefas.sort((a, b) => {
-            let prioridades = { alta: 1, media: 2, baixa: 3 };
-            let prioridadeA = prioridades[a.getAttribute("data-prioridade")] || 4;
-            let prioridadeB = prioridades[b.getAttribute("data-prioridade")] || 4;
+            let prioridades = { alta: 2, media: 3, baixa: 4 };
+            let prioridadeA = prioridades[a.getAttribute("data-prioridade")] || 1;
+            let prioridadeB = prioridades[b.getAttribute("data-prioridade")] || 1;
             return prioridadeA - prioridadeB;
         });
         tarefas.forEach(t => lista.appendChild(t));
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function(){
         novaTarefa.style.display = "flex";
         novaTarefa.style.justifyContent = "center";
         novaTarefa.style.alignItems = "center";
-        novaTarefa.style.marginBottom = "14%";
+        novaTarefa.style.marginTop = "14%";
         novaTarefa.style.fontFamily = "Caveat";
         novaTarefa.style.fontSize = "120%";
         novaTarefa.style.gap = "4%";
@@ -115,11 +115,10 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         })
 
-
         contador.textContent++;
 
         let prioridades = document.createElement("select");
-        ["Grau de Prioridade", "Alta", "Média", "Baixa"].forEach(text => {
+        ["Grau de Prioridade", "Alta", "Media", "Baixa"].forEach(text => {
             let opcao = new Option(text, text.toLowerCase());
             prioridades.appendChild(opcao);
         });
