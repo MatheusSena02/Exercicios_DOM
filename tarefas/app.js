@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function(){
     estilizacaoLista();
 
     let lista = document.querySelector("ul");
+    let numeroTarefas = document.querySelectorAll("li");
     let filtro = document.createElement("select");
     let todasTarefas = new Option("Todas as tarefas", "todas");
     let tarefasPendentes = new Option("Tarefas pendentes", "pendentes");
@@ -100,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function(){
             novoInput.style.display = "inline";
         });
 
-
         let novoInput = document.createElement("input");
         novoInput.setAttribute("type", "text");
         novoInput.setAttribute("placeholder", "Press ENTER to confirm");
@@ -147,8 +147,16 @@ document.addEventListener("DOMContentLoaded", function(){
             setTimeout(() => {
                 lista.removeChild(novaTarefa);
                 contador.textContent--;
+                if(Number(contador.textContent) === 0){
+                    lista.style.backgroundColor = "aliceblue";
+                }
             }, 1500);
         });
+
+        let numeroTarefas = document.querySelectorAll("li").length;
+        if(numeroTarefas > 0){
+            lista.style.backgroundColor = "darkgray";
+        }
 
         let concluirTarefa = document.createElement("button");
         concluirTarefa.textContent = "Concluir";
@@ -159,10 +167,8 @@ document.addEventListener("DOMContentLoaded", function(){
         concluirTarefa.style.fontFamily = "Tiny5";
 
         concluirTarefa.addEventListener("click", function() {
-            novaTarefa.classList.toggle("concluido");
-            novaTarefa.style.backgroundColor = novaTarefa.classList.contains("concluido") ? "#d3d3d3" : "";
-            tituloTarefa.style.textDecoration = novaTarefa.classList.contains("concluido") ? "line-through" : "none";
-            botaoRemover.style.backgroundColor = novaTarefa.classList.contains("concluido") ? "green" : "red";
+            novaTarefa.setAttribute("class", "concluido");
+            tituloTarefa.style.textDecoration = "line-through";
         });
 
         novaTarefa.append(prioridades, tituloTarefa, novoInput, botaoRemover, concluirTarefa);
@@ -171,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function(){
         function limparTarefas(){
             lista.removeChild(novaTarefa);
             contador.textContent = "0";
+            lista.style.backgroundColor = "aliceblue";
         }
         
         filtro.addEventListener("change", function() {

@@ -5,3 +5,9 @@
     margin: 0px;
     padding: 0px;
 }
+
+.concluido{
+    background-color: lightgreen;
+    color: green;
+    color: rgb(141, 141, 141);
+}
