@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function(){
     estilizacaoLista();
 
     let lista = document.querySelector("ul");
-    let numeroTarefas = document.querySelectorAll("li");
     let filtro = document.createElement("select");
     let todasTarefas = new Option("Todas as tarefas", "todas");
     let tarefasPendentes = new Option("Tarefas pendentes", "pendentes");
@@ -171,10 +170,21 @@ document.addEventListener("DOMContentLoaded", function(){
         concluirTarefa.style.color = "aliceblue";
         concluirTarefa.style.fontSize = "70%";
         concluirTarefa.style.fontFamily = "Tiny5";
+        let estado = 0;
 
         concluirTarefa.addEventListener("click", function() {
-            novaTarefa.setAttribute("class", "concluido");
-            tituloTarefa.style.textDecoration = "line-through";
+            if(estado === 0){
+               novaTarefa.setAttribute("class", "concluido");
+                tituloTarefa.style.textDecoration = "line-through";
+                botaoRemover.style.backgroundColor = "green"; 
+                estado = 1;
+            }else{
+                novaTarefa.removeAttribute("class");
+                tituloTarefa.style.textDecoration = "none";
+                botaoRemover.style.backgroundColor = "#800000"; 
+                estado = 0;
+            }
+            
         });
 
         novaTarefa.append(prioridades, tituloTarefa, novoInput, botaoRemover, concluirTarefa);
@@ -204,7 +214,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let clean = document.getElementById("clean");
         clean.addEventListener("click", limparTarefas);
-
     }
 
     let botaoAdicionar = document.querySelector("#add_button");
