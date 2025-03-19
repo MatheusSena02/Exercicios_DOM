@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function(){
         let funcionalidadesTarefas = document.querySelector(".principal__conteudo__lista__caixa");
         funcionalidadesTarefas.style.listStyle = "none";
         funcionalidadesTarefas.style.display = "flex";
-        funcionalidadesTarefas.style.gap = "10%";
+        funcionalidadesTarefas.style.gap = "12%";
         funcionalidadesTarefas.style.transform = "translateX(-8%)";
         funcionalidadesTarefas.style.width = "30%";
 
@@ -93,6 +93,13 @@ document.addEventListener("DOMContentLoaded", function(){
         novaTarefa.style.fontFamily = "Caveat";
         novaTarefa.style.fontSize = "120%";
         novaTarefa.style.gap = "4%";
+        novaTarefa.style.opacity = "0";
+        novaTarefa.style.transitionDuration = "0.5s";
+
+        setTimeout(() => {
+            novaTarefa.style.opacity = "1";
+        }, 120);
+        
 
         let tituloTarefa = document.createElement("h2");
         tituloTarefa.textContent = input.value;
@@ -143,7 +150,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
         botaoRemover.addEventListener("click", function(){
             novaTarefa.style.opacity = "0";
-            novaTarefa.style.transitionDuration = "2s";
             setTimeout(() => {
                 lista.removeChild(novaTarefa);
                 contador.textContent--;
@@ -198,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let clean = document.getElementById("clean");
         clean.addEventListener("click", limparTarefas);
+
     }
 
     let botaoAdicionar = document.querySelector("#add_button");
