@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(){
         lista.style.display = "flex";
         lista.style.flexDirection = "column";
         lista.style.gap = "6%";
-        lista.style.padding = "6% 4%";
+        lista.style.padding = "6% 10%";
         lista.style.backgroundColor = "aliceblue";
         lista.style.border = "10px inset gray";
 
@@ -79,6 +79,12 @@ document.addEventListener("DOMContentLoaded", function(){
         botaoAdicionar.style.color = "aliceblue";
         botaoAdicionar.disabled = false;
     });
+
+    input.addEventListener("keypress", function(event){
+        if(event.key == "Enter"){
+            adicionarTarefa();
+        }
+    })
 
     let contador = document.querySelector(".principal__conteudo__lista__caixa__contador");  
     contador.textContent = "0";
