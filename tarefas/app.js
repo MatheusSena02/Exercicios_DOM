@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function(){
         botaoAdicionar.style.color = "rgb(0, 97, 0)";
         botaoAdicionar.style.fontSize = "100%";
         botaoAdicionar.style.fontFamily = "Tiny5";
+        botaoAdicionar.style.border = "1px solid black";
 
         let botaoLimparTarefas = document.querySelector(".principal__conteudo__lista__caixa button:nth-child(3)");
         botaoLimparTarefas.style.padding = "2%";
@@ -49,8 +50,6 @@ document.addEventListener("DOMContentLoaded", function(){
         contador.style.fontFamily = "Tiny5";
         contador.style.border = "6px inset gray"
     }
-
-    localStorage.clear();
 
     estilizacaoLista();
 
@@ -80,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function(){
         if(input.value === ""){
         botaoAdicionar.style.backgroundColor = "aliceblue";
         botaoAdicionar.style.color = "rgb(0, 97, 0)";
-        botaoAdicionar.disabled = false;
+        botaoAdicionar.disabled = true;
         }else{
             botaoAdicionar.style.backgroundColor = "rgb(0, 97, 0)";
             botaoAdicionar.style.color = "aliceblue";
@@ -235,5 +234,5 @@ document.addEventListener("DOMContentLoaded", function(){
 
     let botaoAdicionar = document.querySelector("#add_button");
     botaoAdicionar.addEventListener("click", adicionarTarefa);
-    
+
 });
