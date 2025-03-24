@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", function(){
         contador.style.border = "6px inset gray"
     }
 
+    localStorage.clear();
+
     estilizacaoLista();
 
     let lista = document.querySelector("ul");
@@ -75,11 +77,17 @@ document.addEventListener("DOMContentLoaded", function(){
 
     let input = document.getElementById("add");
     input.addEventListener("input", function(){
-        botaoAdicionar.style.backgroundColor = "rgb(0, 97, 0)";
-        botaoAdicionar.style.color = "aliceblue";
+        if(input.value === ""){
+        botaoAdicionar.style.backgroundColor = "aliceblue";
+        botaoAdicionar.style.color = "rgb(0, 97, 0)";
         botaoAdicionar.disabled = false;
+        }else{
+            botaoAdicionar.style.backgroundColor = "rgb(0, 97, 0)";
+            botaoAdicionar.style.color = "aliceblue";
+            botaoAdicionar.disabled = false;
+        }
     });
-
+    
     input.addEventListener("keypress", function(event){
         if(event.key == "Enter"){
             adicionarTarefa();
@@ -91,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function adicionarTarefa(){
         let novaTarefa = document.createElement("li");
+        novaTarefa.className = "elemento_lista";
         novaTarefa.style.display = "flex";
         novaTarefa.style.justifyContent = "center";
         novaTarefa.style.alignItems = "center";
@@ -161,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 if(Number(contador.textContent) === 0){
                     lista.style.backgroundColor = "aliceblue";
                 }
-            }, 1500);
+            }, 400);
         });
 
         let numeroTarefas = document.querySelectorAll("li").length;
@@ -184,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 tituloTarefa.style.textDecoration = "line-through";
                 botaoRemover.style.backgroundColor = "green"; 
                 estado = 1;
+                listaTarefas.pop(novaTarefa);
             }else{
                 novaTarefa.removeAttribute("class");
                 tituloTarefa.style.textDecoration = "none";
@@ -220,8 +230,10 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let clean = document.getElementById("clean");
         clean.addEventListener("click", limparTarefas);
+        input.value = "";
     }
 
     let botaoAdicionar = document.querySelector("#add_button");
     botaoAdicionar.addEventListener("click", adicionarTarefa);
+    
 });
