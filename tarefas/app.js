@@ -96,6 +96,26 @@ document.addEventListener("DOMContentLoaded", function(){
     let contador = document.querySelector(".principal__conteudo__lista__caixa__contador");  
     contador.textContent = "0";
 
+    function salvarTarefas() {
+        let tarefas = [];
+        document.querySelectorAll("li").forEach(tarefa => {
+            let titulo = tarefa.querySelector("h2").textContent;
+            let prioridade = tarefa.getAttribute("data-prioridade") || "";
+            let concluida = tarefa.classList.contains("concluido");
+            tarefas.push({ titulo, prioridade, concluida });
+        });
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+    }
+
+    function carregarTarefas() {
+        let tarefasSalvas = localStorage.getItem("tarefas");
+        if(tarefasSalvas){
+            JSON.parse(tarefasSalvas).forEach(tarefaData => {
+                criarTarefa(tarefaData.titulo, tarefaData.prioridade, tarefaData.concluida);
+            });
+        }
+    }
+
     function adicionarTarefa(){
         let novaTarefa = document.createElement("li");
         novaTarefa.className = "elemento_lista";
