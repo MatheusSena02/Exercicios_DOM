@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function(){
         });
 
         let numeroTarefas = document.querySelectorAll("li").length;
-        if(numeroTarefas > 0){
+        if(numeroTarefas > -1){
             lista.style.backgroundColor = "darkgray";
         }
 
