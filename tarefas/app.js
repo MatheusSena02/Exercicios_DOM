@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function(){
     let contador = document.querySelector(".principal__conteudo__lista__caixa__contador");  
     contador.textContent = "0";
 
-    function adicionarTarefa(){
+    function adicionarTarefa(tituloSalvo){
         let novaTarefa = document.createElement("li");
         novaTarefa.className = "elemento_lista";
         novaTarefa.style.display = "flex";
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function(){
         
 
         let tituloTarefa = document.createElement("h2");
-        tituloTarefa.textContent = input.value;
+        tituloTarefa.textContent = tituloSalvo || input.value;
         tituloTarefa.addEventListener("click", function(){
             tituloTarefa.style.display = "none";
             novoInput.style.display = "inline";
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         function salvarTarefas() {
             let tarefas = [];
-            document.querySelectorAll("li").forEach(tarefa => {
+            document.querySelectorAll(".elemento_lista").forEach(tarefa => {
                 let titulo = tarefa.querySelector("h2").textContent;
                 tarefas.push(titulo);
             });
@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function(){
         let tarefasSalvas = localStorage.getItem("tarefas");
         if(tarefasSalvas){
             JSON.parse(tarefasSalvas).forEach(tarefaData => {
-                adicionarTarefa();
+                adicionarTarefa(tarefaData);
             });
         }
     }

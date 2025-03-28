@@ -54,7 +54,7 @@ Abaixo estão as tarefas que você deve completar para praticar a manipulação 
 
 ## 6. **Alterar o texto de uma tarefa**
 
-**Descrição**: Crie uma função que permita ao usuário editar o texto de uma tarefa ao clicar sobre ela. Quando o usuário clicar em uma tarefa, um prompt ou campo de input deve aparecer para que ele possa digitar um novo texto. O texto da tarefa será alterado para o novo valor fornecido pelo usuário.
+**Descrição**: Crie u   ma função que permita ao usuário editar o texto de uma tarefa ao clicar sobre ela. Quando o usuário clicar em uma tarefa, um prompt ou campo de input deve aparecer para que ele possa digitar um novo texto. O texto da tarefa será alterado para o novo valor fornecido pelo usuário.
 
 **Objetivo**: Trabalhar com edição de conteúdo dinâmico utilizando eventos de clique e input de texto.
 
