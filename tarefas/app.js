@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 botaoRemover.style.backgroundColor = "green"; 
                 estado = 1;
                 listaTarefas.pop(novaTarefa);
+                localStorage.removeItem("tarefas");
             }else{
                 novaTarefa.removeAttribute("class");
                 tituloTarefa.style.textDecoration = "none";
@@ -205,19 +206,20 @@ document.addEventListener("DOMContentLoaded", function(){
         novaTarefa.append(prioridades, tituloTarefa, novoInput, botaoRemover, concluirTarefa);
         lista.appendChild(novaTarefa);
 
+        let backupTarefas = [];
         function salvarTarefas() {
-            let tarefas = [];
             document.querySelectorAll(".elemento_lista").forEach(tarefa => {
                 let titulo = tarefa.querySelector("h2").textContent;
-                tarefas.push(titulo);
+                backupTarefas.push(titulo);
             });
-            localStorage.setItem("tarefas", JSON.stringify(tarefas));
+            localStorage.setItem("tarefas", JSON.stringify(backupTarefas));
         }
 
         function limparTarefas(){
             lista.removeChild(novaTarefa);
             contador.textContent = "0";
             lista.style.backgroundColor = "aliceblue";
+            localStorage.clear();
         }
         
         filtro.addEventListener("change", function() {
@@ -253,6 +255,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
     carregarTarefas();
     let botaoAdicionar = document.querySelector("#add_button");
-    botaoAdicionar.addEventListener("click", adicionarTarefa);
+    botaoAdicionar.addEventListener("click", function(){
+        adicionarTarefa();
+    });
 
 });
